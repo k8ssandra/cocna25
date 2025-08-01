@@ -41,29 +41,24 @@ Check the full instructions [here](https://github.com/kubernetes-sigs/kind?tab=r
 ### Verify your installation
 
 ```
-kind create cluster
+kind create cluster --name k8ssandra --config ./kind/w4k1.32.yaml
 ```
 
 Which should output something such as:
 
 ```
-Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.33.1) 🖼
- ✓ Preparing nodes 📦  
+Creating cluster "k8ssandra" ...
+ ✓ Ensuring node image (kindest/node:v1.32.5) 🖼 
+ ✓ Preparing nodes 📦 📦 📦 📦 📦  
  ✓ Writing configuration 📜 
  ✓ Starting control-plane 🕹️ 
  ✓ Installing CNI 🔌 
  ✓ Installing StorageClass 💾 
-Set kubectl context to "kind-kind"
+ ✓ Joining worker nodes 🚜 
+Set kubectl context to "kind-k8ssandra"
 You can now use your cluster with:
 
-kubectl cluster-info --context kind-kind
+kubectl cluster-info --context kind-k8ssandra
 
 Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
-```
-
-You can then delete this cluster:
-
-```
-kubectl delete cluster
 ```
