@@ -1,38 +1,64 @@
-# Step 1 - Installation
+# Community Over Code NA 2025 K8ssandra workshop
 
-k8ssandra-operator has a requirement that cert-manager is installed so that it can generate webhook certificates.
+## Prerequisites
 
-## Install cert-manager
+Install either Kind (Kubernetes IN Docker) or Minikube (but we prefer Kind).
 
-```
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.18.2/cert-manager.yaml
-```
+## Kind installation
 
-Wait for the cert-manager pods to come up:
+### Mac
 
 ```
-kubectl get pods -n cert-manager
-```
-```
-NAME                                       READY   STATUS    RESTARTS   AGE
-cert-manager-69f748766f-mk4h2              1/1     Running   0          37s
-cert-manager-cainjector-7cf6557c49-29hb9   1/1     Running   0          37s
-cert-manager-webhook-58f4cff74d-cdkzl      1/1     Running   0          37s
+brew install kind
 ```
 
-## Install k8ssandra-operator
+
+### Windows
 
 ```
-kubectl apply -k "github.com/k8ssandra/k8ssandra-operator/config/deployments/control-plane?ref=v1.26.0" --server-side
+curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.29.0/kind-windows-amd64
+Move-Item .\kind-windows-amd64.exe c:\some-dir-in-your-PATH\kind.exe
 ```
 
-Wait for cass-operator and k8ssandra-operator to come up:
+### Linux
+
+#### For AMD64 / x86_64
+```
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.29.0/kind-$(uname)-amd64
+```
+
+#### For ARM64
+```
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.29.0/kind-$(uname)-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+
+### If that doesn't work for you
+
+Check the full instructions [here](https://github.com/kubernetes-sigs/kind?tab=readme-ov-file#installation-and-usage).
+
+### Verify your installation
 
 ```
-kubectl get pods -n k8ssandra-operator
+kind create cluster --name k8ssandra --config ./kind/w4k1.32.yaml
 ```
+
+Which should output something such as:
+
 ```
-NAME                                                READY   STATUS    RESTARTS   AGE
-cass-operator-controller-manager-7c86cd444d-fmdsj   1/1     Running   0          36s
-k8ssandra-operator-649fb8cd5-nq5wt                  1/1     Running   0          36s
+Creating cluster "k8ssandra" ...
+ ✓ Ensuring node image (kindest/node:v1.32.5) 🖼 
+ ✓ Preparing nodes 📦 📦 📦 📦 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+ ✓ Joining worker nodes 🚜 
+Set kubectl context to "kind-k8ssandra"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-k8ssandra
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
 ```

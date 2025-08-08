@@ -1,0 +1,13 @@
+apiVersion: control.k8ssandra.io/v1alpha1
+kind: K8ssandraTask
+metadata:
+  name: upgradesstables-dc1
+spec:
+  cluster:
+    name: test
+    namespace: db
+  template:
+    jobs:
+      - args: {}
+        command: upgradesstables
+        name: ''

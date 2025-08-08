@@ -2,7 +2,8 @@
 
 ## Prerequisites
 
-Install either Kind (Kubernetes IN Docker) or Minikube (but we prefer Kind).
+- A fully configured Docker installation (Docker Desktop, Colima, Podman, ...)
+- [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) (Kubernetes IN Docker).
 
 ## Kind installation
 
@@ -37,28 +38,3 @@ sudo mv ./kind /usr/local/bin/kind
 ### If that doesn't work for you
 
 Check the full instructions [here](https://github.com/kubernetes-sigs/kind?tab=readme-ov-file#installation-and-usage).
-
-### Verify your installation
-
-```
-kind create cluster --name k8ssandra --config ./kind/w4k1.32.yaml
-```
-
-Which should output something such as:
-
-```
-Creating cluster "k8ssandra" ...
- ✓ Ensuring node image (kindest/node:v1.32.5) 🖼 
- ✓ Preparing nodes 📦 📦 📦 📦 📦  
- ✓ Writing configuration 📜 
- ✓ Starting control-plane 🕹️ 
- ✓ Installing CNI 🔌 
- ✓ Installing StorageClass 💾 
- ✓ Joining worker nodes 🚜 
-Set kubectl context to "kind-k8ssandra"
-You can now use your cluster with:
-
-kubectl cluster-info --context kind-k8ssandra
-
-Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
-```
