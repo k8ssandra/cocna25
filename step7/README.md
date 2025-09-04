@@ -10,3 +10,4 @@ Apply the `replacenode-task.yaml` manifest to trigger the replacement of the fir
 
 ```
 kubectl apply -f ./step7/replacenode-task.yaml -n db
+```
