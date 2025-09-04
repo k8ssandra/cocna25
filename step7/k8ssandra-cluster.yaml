@@ -1,0 +1,49 @@
+apiVersion: k8ssandra.io/v1alpha1
+kind: K8ssandraCluster
+metadata:
+  name: test
+spec:
+  cassandra:
+    serverVersion: 5.0.4
+    serverType: cassandra
+    storageConfig:
+      cassandraDataVolumeClaimSpec:
+        storageClassName: standard
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+    config:
+      cassandraYaml:
+        concurrent_compactors: 1
+        concurrent_reads: 4
+        concurrent_writes: 4
+      jvmOptions:
+        heapSize: 512Mi
+        heapNewGenSize: 256Mi
+        gc: G1GC
+    datacenters:
+      - metadata:
+          name: dc1
+        size: 2
+        racks:
+          - name: rack1
+      - metadata:
+          name: dc2
+        size: 2
+        racks:
+          - name: rack1
+    mgmtAPIHeap: 64Mi
+  reaper:
+    storageType: local
+    deploymentMode: SINGLE
+    heapSize: 256Mi
+    storageConfig:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+    autoScheduling:
+      enabled: true

@@ -1,0 +1,16 @@
+apiVersion: control.k8ssandra.io/v1alpha1
+kind: K8ssandraTask
+metadata:
+  name: replace-node1
+spec:
+  cluster:
+    name: test
+    namespace: db
+  datacenters:
+    - dc1
+  template:
+    jobs:
+      - args:
+          pod_name: test-dc1-rack1-sts-0
+        command: replacenode
+        name: ''
