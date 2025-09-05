@@ -62,7 +62,7 @@ Install k8ssandra-operator using Helm (recommended) or with kubectl (Kustomize t
 ```console
 helm repo add k8ssandra https://helm.k8ssandra.io/stable
 helm repo update
-helm install k8ssandra-operator k8ssandra/k8ssandra-operator -n k8ssandra-operator --create-namespace
+helm install k8ssandra-operator k8ssandra/k8ssandra-operator -n k8ssandra-operator --create-namespace --set global.clusterScoped=true
 ```
 
 #### Using kubectl
