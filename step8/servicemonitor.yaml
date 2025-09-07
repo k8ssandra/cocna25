@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: telemetry
+    app.kubernetes.io/managed-by: k8ssandra-operator
+    app.kubernetes.io/part-of: k8ssandra
+    k8ssandra.io/cluster-name: test
+    k8ssandra.io/cluster-namespace: k8ssandra-operator
+    k8ssandra.io/datacenter: dc1
+  name: test-dc1-cass
+  namespace: k8ssandra-operator
+spec:
+  endpoints:
+  - bearerTokenSecret:
+      key: ""
+      name: ""
+    interval: 15s
+    path: /metrics
+    targetPort: 9000
+    scheme: http
+    scrapeTimeout: 15s
+  namespaceSelector:
+    matchNames:
+    - k8ssandra-operator
+  selector:
+    matchExpressions:
+    - key: cassandra.datastax.com/cluster
+      operator: In
+      values:
+      - test
+    matchLabels:
+      app.kubernetes.io/managed-by: cass-operator
+  targetLabels:
+  - cassandra.datastax.com/cluster
+  - cassandra.datastax.com/datacenter

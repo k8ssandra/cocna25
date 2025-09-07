@@ -2,7 +2,15 @@
 
 ## Prerequisites
 
-Install either Kind (Kubernetes IN Docker) or Minikube (but we prefer Kind).
+Install either Kind (Kubernetes IN Docker) or Minikube (but we prefer Kind). You will also need kubectl and Helm is recommended.
+
+### kubectl installation
+
+If you don't have kubectl installed, follow the instructions:
+
+[Install kubectl on macOS](https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/)
+[Install kubectl on Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+[Install kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
 ## Kind installation
 
@@ -12,8 +20,21 @@ Install either Kind (Kubernetes IN Docker) or Minikube (but we prefer Kind).
 brew install kind
 ```
 
-
 ### Windows
+
+With chocolatey
+
+```
+choco install kind
+```
+
+With winget
+
+```
+winget install Kubernetes.kind
+```
+
+Powershell
 
 ```
 curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.29.0/kind-windows-amd64
@@ -63,7 +84,7 @@ kubectl cluster-info --context kind-k8ssandra
 Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
 ```
 
-### Pull the Cassnandra docker images
+### Pull the Cassandra docker images
 
 ```
 docker pull k8ssandra/cass-management-api:5.0.3-ubi​
