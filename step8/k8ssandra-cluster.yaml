@@ -1,0 +1,82 @@
+apiVersion: k8ssandra.io/v1alpha1
+kind: K8ssandraCluster
+metadata:
+  name: test
+spec:
+  cassandra:
+    serverVersion: 5.0.4
+    serverType: cassandra
+    storageConfig:
+      cassandraDataVolumeClaimSpec:
+        storageClassName: standard
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+    config:
+      cassandraYaml:
+        concurrent_compactors: 1
+        concurrent_reads: 4
+        concurrent_writes: 4
+      jvmOptions:
+        heapSize: 512Mi
+        heapNewGenSize: 256Mi
+        gc: G1GC
+    datacenters:
+      - metadata:
+          name: dc1
+        size: 2
+        racks:
+          - name: rack1
+      - metadata:
+          name: dc2
+        size: 2
+        racks:
+          - name: rack1
+    mgmtAPIHeap: 64Mi
+    telemetry:
+      mcac:
+        enabled: false
+      vector:
+        enabled: true
+        components:
+          sources:
+            - config: |-
+                filesystem.devices.excludes = ["binfmt_misc"]
+                filesystem.filesystems.excludes = ["binfmt_misc"]
+                filesystem.mountpoints.excludes = ["*/proc/sys/fs/binfmt_misc"]
+                scrape_interval_secs = 30
+              name: host_metrics
+              type: host_metrics
+          transforms:
+            - config: |-
+                source = """
+                .tags.cluster = get_env_var!("CLUSTER_NAME")
+                .tags.datacenter = get_env_var!("DATACENTER_NAME")
+                .tags.rack = get_env_var!("RACK_NAME")
+                """
+              inputs:
+                - host_metrics
+              name: enrich_host_metrics
+              type: remap
+          sinks:
+            - name: prometheus_sink
+              type: prometheus_remote_write
+              inputs:
+                - cassandra_metrics
+                - enrich_host_metrics
+              config: |
+                endpoint = "http://prometheus-kube-prometheus-prometheus.k8ssandra-operator.svc.cluster.local:9090/api/v1/write"
+  reaper:
+    storageType: local
+    deploymentMode: SINGLE
+    heapSize: 256Mi
+    storageConfig:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+    autoScheduling:
+      enabled: true

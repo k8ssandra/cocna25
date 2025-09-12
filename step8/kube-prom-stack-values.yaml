@@ -1,0 +1,15 @@
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+grafana:
+  # -- Provisions an instance of Grafana and wires it up with a DataSource
+  # referencing this Prometheus installation
+  enabled: true
+  adminUser: admin
+  adminPassword: secret
+  defaultDashboardsEnabled: false
+  # -- Additional plugins to be installed during Grafana startup,
+  # `grafana-polystat-panel` is used by the default Cassandra dashboards.
+  plugins:
+    - grafana-polystat-panel
+  grafana.ini: {}
