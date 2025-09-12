@@ -1,8 +1,6 @@
 prometheus:
   prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelector: {}
-    serviceMonitorNamespaceSelector: {}
+    enableRemoteWriteReceiver: true
 grafana:
   # -- Provisions an instance of Grafana and wires it up with a DataSource
   # referencing this Prometheus installation
